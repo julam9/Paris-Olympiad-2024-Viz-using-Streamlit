@@ -3,6 +3,7 @@ from shinywidgets import render_plotly
 
 ui.page_opts(title="Paris Olympic 2024 Visualizations", fillable=True)
 
+
 with ui.sidebar():
     ui.input_selectize(
         "var", "Select variable",
