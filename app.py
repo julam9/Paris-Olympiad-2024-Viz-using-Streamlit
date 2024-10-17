@@ -1,24 +1,37 @@
-from shiny.express import input, render, ui
-from shinywidgets import render_plotly 
-import pandas as pd
+import pandas as pd 
+import streamlit as st 
+import plotly.express as px
 
-ui.page_opts(title="Paris Olympic 2024 Visualizations", fillable=True)
+medals_ = pd.read_csv('data/medals_total.csv')
+coach_ = pd.read_csv('data_clean/coach_clean.csv')
+medallist_ = pd.read_csv('data_clean/medallist_clean.csv') 
+athlete_ = pd.read_csv('data_clean/athlete_data.csv')
 
-medals_ = pd.read_csv('data\medals_total.csv')
-coach_ = pd.read_csv('data-clean\coach_clean.csv')
-medallist_ = pd.read_csv('data-clean\medallist_clean.csv') 
-athlete_ = pd.read_csv('data-clean\athlete_clean.csv')
+def intro():
+    st.write("# Welcome to Paris Olympiad 2024 Dashboard! 👋")
+    st.sidebar.success("Select a category you want to know.")
 
-with ui.sidebar():
-    ui.input_selectize(
-        "var", "Select variable",
-        ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g", "year"]
+    st.markdown(
+        """
+        The 2024 Summer Olympics (French: Jeux olympiques d'été de 2024), officially the Games of the XXXIII Olympiad (French: Jeux de la XXXIIIe olympiade de l'ère moderne) and branded as Paris 2024, were an international multi-sport event held from 26 July to 11 August 2024 in France (Wikipedia)
+    """
     )
-    ui.input_numeric("bins", "Number of bins", 30)
 
-with ui.card(full_screen=True):
-    @render_plotly
-    def hist():
-        import plotly.express as px
-        from palmerpenguins import load_penguins
-        return px.histogram(load_penguins(), x=input.var(), nbins=input.bins())
+def athlete():
+    st.title("Athlete in the Olympic 2024")
+
+def coach():
+    st.title("Coach in the Olympic 2024")
+    
+def medals():
+    st.title("Medal distribution")
+        
+page_names_to_funcs = {
+    "General": intro,
+    "Athlete": athlete,
+    "Coach" : coach,
+    "Medals" : medals
+}
+
+demo_name = st.sidebar.selectbox("Choose a scope", page_names_to_funcs.keys())
+page_names_to_funcs[demo_name]()
