@@ -1,8 +1,13 @@
 from shiny.express import input, render, ui
 from shinywidgets import render_plotly 
+import pandas as pd
 
 ui.page_opts(title="Paris Olympic 2024 Visualizations", fillable=True)
 
+medals_ = pd.read_csv('data\medals_total.csv')
+coach_ = pd.read_csv('data-clean\coach_clean.csv')
+medallist_ = pd.read_csv('data-clean\medallist_clean.csv') 
+athlete_ = pd.read_csv('data-clean\athlete_clean.csv')
 
 with ui.sidebar():
     ui.input_selectize(
