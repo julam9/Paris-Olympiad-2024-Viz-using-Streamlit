@@ -43,9 +43,24 @@ def athlete():
     </div>
     """, unsafe_allow_html=True)
 
-    gender_ath = px.bar(athlete_st.gender.value_counts(), x=athlete_st.gender.value_counts().index, y=athlete_st.gender.value_counts().values, labels={'x': 'Gender', 'y': 'Count'})
+    gender_ath = px.bar(athlete_st.gender.value_counts(), x=athlete_st.gender.value_counts().index, y=athlete_st.gender.value_counts().values, 
+                        labels={'x': 'Gender', 'y': 'Count'}, title="Athlete Gender in Olympic")
+    gender_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
     st.plotly_chart(gender_ath)
+    
+    activeness_ath = px.bar(athlete_st.current.value_counts(), x=athlete_st.current.value_counts().index, y=athlete_st.current.value_counts().values, 
+                        labels={'x': 'Still Active', 'y': 'Count'}, title="Still Active as an Athlete")
+    activeness_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(activeness_ath)
+    
+    height_ath = px.box(athlete_st, x="height", labels={'x': 'Height', 'y': 'Count'}, title="Athlete Height Distribution")
+    height_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(height_ath)
 
+    weight_ath = px.box(athlete_st, x="height", title="Athlete Weight Distribution")
+    weight_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(weight_ath)
+    
 def coach():
     st.title("Coach in the Olympic 2024")
     
