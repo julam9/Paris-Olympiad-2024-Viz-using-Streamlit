@@ -53,14 +53,42 @@ def athlete():
     activeness_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
     st.plotly_chart(activeness_ath)
     
-    height_ath = px.box(athlete_st, x="height", labels={'x': 'Height', 'y': 'Count'}, title="Athlete Height Distribution")
+    height_ath = px.box(athlete_st[athlete_st['height']!=0.0], x="height", labels={'x': 'Height', 'y': 'Count'}, title="Athlete Height Distribution")
     height_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
     st.plotly_chart(height_ath)
+    st.markdown(
+    """
+    <style>
+    .centered-caption {
+        text-align: center;
+        color: white;
+        font-size: 0.9rem;
+        margin-top: -20px;  /* Adjust to bring it closer */
+    }
+    </style>
+    <p class="centered-caption">The plot is adjusted for non zero height that is presence in the data</p>
+    """,
+    unsafe_allow_html=True
+    )
 
-    weight_ath = px.box(athlete_st, x="height", title="Athlete Weight Distribution")
+    weight_ath = px.box(athlete_st[athlete_st['weight']!=0.0], x="weight", title="Athlete Weight Distribution")
     weight_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
     st.plotly_chart(weight_ath)
-    
+    st.markdown(
+    """
+    <style>
+    .centered-caption {
+        text-align: center;
+        color: white;
+        font-size: 0.9rem;
+        margin-top: -20px;  /* Adjust to bring it closer */
+    }
+    </style>
+    <p class="centered-caption">The plot is adjusted for non zero weight that is presence in the data</p>
+    """,
+    unsafe_allow_html=True
+    )
+     
 def coach():
     st.title("Coach in the Olympic 2024")
     
