@@ -1,11 +1,13 @@
 import pandas as pd 
 import streamlit as st 
 import plotly.express as px
+import plotly.graph_objects as go
 
 medals_st = pd.read_csv('data/medals_total.csv')
 coach_st = pd.read_csv('data_clean/coach_clean.csv')
 medallist_st = pd.read_csv('data_clean/medallist_clean.csv') 
 athlete_st = pd.read_csv('data_clean/athlete_data.csv')
+medals_intro = medals_st[:5]
 
 def intro():
     st.write("# Welcome to Paris Olympiad 2024 Dashboard! 🏆")
@@ -28,10 +30,63 @@ def intro():
     - Some Parisians refer to non-Parisians as “ploucs” 
     - The Louvre is the world’s most visited museum 
     - The Bastille prison no longer exists
-    
-    If you want to know more details about Paris Olympic, you can choose the category at the sidebar 👈
     """
     )
+    
+    st.subheader("Olympics Overall Statistics")
+    st.markdown(f"""
+    <div style="text-align: center;">
+        <h1 style="font-size: 60px;">{medals_st.shape[0]}</h1>
+        <p>Countries particicapting in this year Olympic</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div style="text-align: center;">
+        <h1 style="font-size: 60px;">{medals_st.Total.sum()}</h1>
+        <p>Medals contested in this Olympic</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    fig_medal = go.Figure()
+
+    # Add bars for each medal type
+    fig_medal.add_trace(go.Bar(
+        x=medals_intro['country_code'],
+        y=medals_intro['Gold Medal'],
+        name='Gold Medal',
+        marker_color='gold'
+    ))
+
+    fig_medal.add_trace(go.Bar(
+        x=medals_intro['country_code'],
+        y=medals_intro['Silver Medal'],
+        name='Silver Medal',
+        marker_color='silver'
+    ))
+
+    fig_medal.add_trace(go.Bar(
+        x=medals_intro['country_code'],
+        y=medals_intro['Bronze Medal'],
+        name='Bronze Medal',
+        marker_color='#cd7f32'  # Bronze color
+    ))
+
+    # Update layout
+    fig_medal.update_layout(
+        barmode='group',
+        title='Medals Count by Country',
+        xaxis_title='Country Code',
+        yaxis_title='Number of Medals'
+    )
+
+# Display the plot in Streamlit
+    st.plotly_chart(fig_medal)
+      
+    st.markdown( 
+    """ 
+    If you want to know more details about Paris Olympic, you can choose the category at the sidebar 👈 
+    """)
     
 
 def athlete():
