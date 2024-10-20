@@ -85,7 +85,7 @@ def intro():
       
     st.markdown( 
     """ 
-    If you want to know more details about Paris Olympic, you can choose the category at the sidebar 👈 
+    If you want to know more details about Paris Olympic, you can choose the category 👈 
     """)
     
 
