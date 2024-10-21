@@ -40,16 +40,21 @@ def intro():
         <p>Countries particicapting in this year Olympic</p>
     </div>
     """, unsafe_allow_html=True)
-    
+        
     st.markdown(f"""
     <div style="text-align: center;">
         <h1 style="font-size: 60px;">{medals_st.Total.sum()}</h1>
-        <p>Medals contested in this Olympic</p>
+        <p>Medals contested in this Olympic with distribution as this : </p>
     </div>
     """, unsafe_allow_html=True)
     
-    fig_medal = go.Figure()
+    gold_medal_total = medals_st['Gold Medal'].sum()
+    silver_medal_total = medals_st['Silver Medal'].sum() 
+    bronze_medal_total = medals_st['Bronze Medal'].sum()
+    total_medal_dist = px.pie(values=[gold_medal_total, silver_medal_total, bronze_medal_total], names=['Gold Medal', 'Silver Medal', 'Bronze Medal'])
+    st.plotly_chart(total_medal_dist)
 
+    fig_medal = go.Figure()
     # Add bars for each medal type
     fig_medal.add_trace(go.Bar(
         x=medals_intro['country_code'],
@@ -57,32 +62,36 @@ def intro():
         name='Gold Medal',
         marker_color='gold'
     ))
-
     fig_medal.add_trace(go.Bar(
         x=medals_intro['country_code'],
         y=medals_intro['Silver Medal'],
         name='Silver Medal',
         marker_color='silver'
     ))
-
     fig_medal.add_trace(go.Bar(
         x=medals_intro['country_code'],
         y=medals_intro['Bronze Medal'],
         name='Bronze Medal',
         marker_color='#cd7f32'  # Bronze color
     ))
-
-    # Update layout
+    # Update layout bar chart
     fig_medal.update_layout(
         barmode='group',
         title='Medals Count by Country',
         xaxis_title='Country Code',
         yaxis_title='Number of Medals'
     )
-
-# Display the plot in Streamlit
+    # Display the plot 
     st.plotly_chart(fig_medal)
-      
+    
+    st.markdown(f"""
+    <div style="text-align: center;">
+        <h1 style="font-size: 60px;">{athlete_st.disciplines.nunique()}</h1>
+        <p>Sports discipline  contested in this Olympic</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # to let the viewers see the others
     st.markdown( 
     """ 
     If you want to know more details about Paris Olympic, you can choose the category 👈 
@@ -102,11 +111,6 @@ def athlete():
                         labels={'x': 'Gender', 'y': 'Count'}, title="Athlete Gender in Olympic")
     gender_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
     st.plotly_chart(gender_ath)
-    
-    activeness_ath = px.bar(athlete_st.current.value_counts(), x=athlete_st.current.value_counts().index, y=athlete_st.current.value_counts().values, 
-                        labels={'x': 'Still Active', 'y': 'Count'}, title="Still Active as an Athlete")
-    activeness_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
-    st.plotly_chart(activeness_ath)
     
     height_ath = px.box(athlete_st[athlete_st['height']!=0.0], x="height", labels={'x': 'Height', 'y': 'Count'}, title="Athlete Height Distribution")
     height_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
@@ -143,6 +147,15 @@ def athlete():
     """,
     unsafe_allow_html=True
     )
+
+    age_ath = px.histogram(athlete_st, x="age", nbins=20, title="Athlete Age Distribution")
+    st.plotly_chart(age_ath)
+    
+    nationality_ath = px.bar(athlete_st.same_country.value_counts(), x=athlete_st.same_country.value_counts().index, y=athlete_st.same_country.value_counts().values, 
+                        labels={'x': 'Nationality and Country Represented Sameness', 'y': 'Count'}, title="Does athletes represent their own country?")
+    nationality_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(nationality_ath)
+    
      
 def coach():
     st.title("Coach in the Olympic 2024")
