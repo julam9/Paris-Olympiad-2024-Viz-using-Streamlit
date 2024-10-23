@@ -156,6 +156,20 @@ def athlete():
     
 def coach():
     st.title("Coach in the Olympic 2024")
+    st.markdown(f"""
+    <div style="text-align: center;">
+        <h1 style="font-size: 60px;">{coach_st.name.nunique()}</h1>
+        <p>Coaches coaching in this event.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    gender_coach = px.bar(coach_st.gender.value_counts(), x=coach_st.gender.value_counts().index, y=coach_st.gender.value_counts().values,
+                        labels={'x': 'Gender', 'y': 'Count'}, title="Coach Gender in Olympic")
+    gender_coach.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(gender_coach)
+    st.caption("Same as athlete, the coaches dominated by male coach")
+    
+    
     
 def medals():
     st.title("Medal distribution")
