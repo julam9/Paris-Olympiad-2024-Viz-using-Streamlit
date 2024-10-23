@@ -169,7 +169,32 @@ def coach():
     st.plotly_chart(gender_coach)
     st.caption("Same as athlete, the coaches dominated by male coach")
     
+    func_coach = px.bar(coach_st.function.value_counts(), y=coach_st.function.value_counts().index, x=coach_st.function.value_counts().values,
+                        orientation='h', labels={'x': 'Function', 'y': 'Count'}, title="Coach Function in Olympic")
+    st.plotly_chart(func_coach)
+    st.caption("Most of the coaches functioning as coach")
     
+    country_coach = px.bar(coach_st.country.value_counts()[:5], y=coach_st.country.value_counts()[:5].index, x=coach_st.country.value_counts()[:5].values,
+                        labels={'x': 'Count', 'y': 'Country'}, title="Top 5 Countries with most Coaches")
+    country_coach.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(country_coach)
+    
+    age_coach = px.histogram(coach_st[coach_st['age']!='Age unavaible'], x='age', nbins=20, title='Coaches Age Distribution')
+    st.plotly_chart(age_coach)
+    st.markdown(
+    """
+    <style>
+    .centered-caption {
+        text-align: center;
+        color: white;
+        font-size: 0.9rem;
+        margin-top: -20px;  /* Adjust to bring it closer */
+    }
+    </style>
+    <p class="centered-caption">The plot is adjusted for the only avaible age in the data</p>
+    """,
+    unsafe_allow_html=True
+    )
     
 def medals():
     st.title("Medal distribution")
