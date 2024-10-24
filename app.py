@@ -193,8 +193,16 @@ def coach():
     </style>
     <p class="centered-caption">The plot is adjusted for the only avaible age in the data</p>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True 
     )
+    
+    st.markdown(f"""
+    <div style="text-align: center;">
+        <h1 style="font-size: 60px;">{coach_st.disciplines.nunique()}</h1>
+        <p>Sports discipline coached in this Olympic</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
     
 def medals():
     st.title("Medal distribution")
