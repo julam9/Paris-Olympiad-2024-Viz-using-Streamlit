@@ -154,6 +154,24 @@ def athlete():
     nationality_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
     st.plotly_chart(nationality_ath)
     
+    top_edu = athlete_st.education.value_counts(normalize=True)[:5].to_frame().reset_index()
+    edu_ath = px.bar(top_edu, y='education', x='proportion',
+                      orientation='h', labels={'y': 'Education of Athletes ', 'x': 'Count'}, title="Education background of athletes")
+    st.plotly_chart(edu_ath)
+    st.caption('Most athletes come from physical education background')
+    
+    top_occup = athlete_st.occupation.value_counts(normalize=True)[:5].to_frame().reset_index()
+    occup_ath = px.bar(top_occup, y='occupation', x='proportion',
+                      orientation='h', labels={'y': 'Occupation of Athletes ', 'x': 'Count'}, title="Occupation of athletes")
+    st.plotly_chart(occup_ath)
+    st.caption('Most athletes occupy as only athlete, there are also some athlete occupy as students')
+    
+    
+    same_living_ath = px.bar(athlete_st.same_living.value_counts(), x=athlete_st.same_living.value_counts().index, y=athlete_st.same_living.value_counts().values, 
+                        labels={'x': 'Home and Country Represented Sameness', 'y': 'Count'}, title="Does athletes stay at country they represent?")
+    same_living_ath.update_layout(bargap=0.7, width=800, yaxis=dict(showgrid=False))
+    st.plotly_chart(same_living_ath)
+         
 def coach():
     st.title("Coach in the Olympic 2024")
     st.markdown(f"""
@@ -203,15 +221,10 @@ def coach():
     </div>
     """, unsafe_allow_html=True)
     
-    
-def medals():
-    st.title("Medal distribution")
-        
 page_names_to_funcs = {
     "General": intro,
     "Athlete": athlete,
-    "Coach" : coach,
-    "Medals" : medals
+    "Coach" : coach
 }
 
 demo_name = st.sidebar.selectbox("Choose a scope", page_names_to_funcs.keys())
